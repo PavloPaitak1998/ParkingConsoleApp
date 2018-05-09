@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Car.cs" />
     <Compile Include="ICar.cs" />
+    <Compile Include="OutOfBalanceException.cs" />
     <Compile Include="Parking.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
