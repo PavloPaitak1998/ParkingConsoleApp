@@ -9,7 +9,7 @@ namespace ParkingConsoleApp
 {
         public static class UserInterfase
      {
-        static StateObjClass stateObj2;
+        static StateObjClass stateObjFor_timerTransactions;
         static List<StateObjClass> statesOC = new List<StateObjClass>();
         static Parking parking;
 
@@ -22,7 +22,7 @@ namespace ParkingConsoleApp
             parking.Removed += Message;
             parking.Refilled += Message;
             timerTransactions = null;
-            stateObj2 = null;
+            stateObjFor_timerTransactions = null;
 
         }
 
@@ -94,26 +94,49 @@ namespace ParkingConsoleApp
             switch (act)
             {
                 case 1:
-                    car = CarInfo();
-                    car.Balance = GetBalance();
-                    parking.AddCar(car);
-                    StateObjClass stateObj = new StateObjClass();
-                    statesOC.Add(stateObj);
-
-                    stateObj.TimerCanceled = false;
-                    stateObj.car = car;
-                    Timer timer = new Timer(parking.Charge, stateObj, Settings.TimeOut, Settings.TimeOut);
-                    stateObj.TimerReference = timer;
-                    if (timerTransactions==null)
                     {
-                        stateObj2 = new StateObjClass();
-                        statesOC.Add(stateObj);
-                        stateObj.TimerCanceled = false;
+                        bool flag = true;
+                        while (flag)
+                        {
+                            try
+                            {
+                                car = CarInfo();
+                                car.Balance = GetBalance();
+                                parking.AddCar(car);
+                                flag = false;
+                            }
+                            catch (NullReferenceException e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
+                            catch (CarAlreadyExistException e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
+                        }
 
-                        timerTransactions = new Timer(parking.WriteTransactions, stateObj2, 0, 60000);
-                        stateObj.TimerReference = timerTransactions;
-                    }                    
-                    break;
+                        StateObjClass stateObj = new StateObjClass();
+                        statesOC.Add(stateObj);
+
+                        stateObj.TimerCanceled = false;
+                        stateObj.car = car;
+
+                        Timer timer = new Timer(parking.Charge, stateObj, Settings.TimeOut, Settings.TimeOut);
+                        stateObj.TimerReference = timer;
+
+                        if (timerTransactions == null)
+                        {
+                            stateObjFor_timerTransactions = new StateObjClass
+                            {
+                                TimerCanceled = false
+                            };
+
+                            timerTransactions = new Timer(parking.WriteTransactions, stateObjFor_timerTransactions, 0, 60000);
+                            stateObjFor_timerTransactions.TimerReference = timerTransactions;
+                        }
+                        break;
+
+                    }
                 case 2:
                     {
                         car = CarInfo();
@@ -142,34 +165,47 @@ namespace ParkingConsoleApp
                             }
                         }
                         
-
                         var stateObjClass = statesOC.Find(st => st.car.Id == car.Id);
                         stateObjClass.TimerCanceled = true;
                         statesOC.Remove(stateObjClass);
+
                         if (parking.BusyParkingSpace == 0)
                         {
-                            stateObj2.TimerCanceled = true;
+                            stateObjFor_timerTransactions.TimerCanceled = true;
                         }
                         break;
                     }                  
                 case 3:
-                    car = CarInfo();
-                    var balance = GetBalance();
-                    parking.RefillBalance(car, balance);
-                    break;
+                    {
+                        car = CarInfo();
+                        var balance = GetBalance();
+                        parking.RefillBalance(car, balance);
+                        break;
+                    }
                 case 4:
-                    Console.WriteLine(parking.FreeParkingSpace);
-                    break;
+                    {
+                        Console.WriteLine(parking.FreeParkingSpace);
+                        break;
+
+                    }
                 case 5:
-                    Console.WriteLine(parking.BusyParkingSpace);
-                    break;
+                    {
+                        Console.WriteLine(parking.BusyParkingSpace);
+                        break;
+
+                    }
                 case 6:
-                    Console.WriteLine(parking.Balance);
-                    break;
+                    {
+                        Console.WriteLine(parking.Balance);
+                        break;
+                    }
                 case 7:
-                    Console.Clear();
-                    parking.ReadTransactions();
-                    break;
+                    {
+                        Console.Clear();
+                        parking.ReadTransactions();
+                        break;
+
+                    }
             }
         }
 

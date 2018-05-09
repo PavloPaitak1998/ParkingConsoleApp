@@ -46,22 +46,17 @@ namespace ParkingConsoleApp
 
             if (car == null)
             {
-                throw new NullReferenceException();
+                throw new NullReferenceException("Sth went wrong please input Car information again!");
             }
             else if (Exist(car))
             {
-                throw new Exception();
+                throw new CarAlreadyExistException("Car with this Id: {car.Id} and Type: {car.TypeCar} already exist.\n Please try to input another car information");
             }
             else if (numberOfCars == Settings.ParkingSpace)
             {
                 numberOfCars--;
                 throw new Exception();
             }
-            else if (car.Balance < Settings.Price[car.TypeCar])
-            {
-                throw new Exception();
-            }
-
 
             Cars.Add(car as Car);
             Added($"Car: Id={car.Id} Type={car.TypeCar} is added");

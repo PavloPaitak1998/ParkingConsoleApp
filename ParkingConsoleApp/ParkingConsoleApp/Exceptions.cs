@@ -11,7 +11,6 @@ namespace ParkingConsoleApp
         public OutOfBalanceException(string message)
        : base(message)
         { }
-
     }
 
     class CarNotExistException : Exception
@@ -19,7 +18,13 @@ namespace ParkingConsoleApp
         public CarNotExistException(string message)
        : base(message)
         { }
+    }
 
+    class CarAlreadyExistException : Exception
+    {
+        public CarAlreadyExistException(string message)
+       : base(message)
+        { }
     }
 
 }
