@@ -160,6 +160,13 @@ namespace ParkingConsoleApp
             Transactions = new List<Transaction>();
         }
 
+        public void ReadTransactions()
+        {
+            using (StreamReader sr = new StreamReader(path))
+            {
+                Console.WriteLine(sr.ReadToEnd());
+            }
+        }
 
         private bool Exist(ICar car)
         {
