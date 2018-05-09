@@ -90,11 +90,26 @@ namespace ParkingConsoleApp
 
             while (true)
             {
-                act = int.Parse(Console.ReadLine());
+                try
+                {
+                    act = int.Parse(Console.ReadLine());
+                }
+                catch (FormatException)
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Uncorrect format entered data!");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    ActionInfo();
+                    continue;
+                }
+                
                 if (act==1 && parking.FreeParkingSpace == 0)
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("The Parking is full if you want to add car you must do it later.\n Please try another action\n");
+                    Console.ForegroundColor = ConsoleColor.White;
                     ActionInfo();
                     continue;
                 }
@@ -121,11 +136,15 @@ namespace ParkingConsoleApp
                             }
                             catch (NullReferenceException e)
                             {
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine(e.Message);
+                                Console.ForegroundColor = ConsoleColor.White;
                             }
                             catch (CarAlreadyExistException e)
                             {
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine(e.Message);
+                                Console.ForegroundColor = ConsoleColor.White;
                             }
                         }
 
@@ -164,17 +183,23 @@ namespace ParkingConsoleApp
                             }
                             catch (OutOfBalanceException e)
                             {
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine(e.Message);
+                                Console.ForegroundColor = ConsoleColor.White;
                                 car.Balance = GetBalance();
                             }
                             catch (CarNotExistException e)
                             {
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine(e.Message);
+                                Console.ForegroundColor = ConsoleColor.White;
                                 car = CarInfo();
                             }
                             catch(NullReferenceException e)
                             {
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine(e.Message);
+                                Console.ForegroundColor = ConsoleColor.White;
                                 car = CarInfo();
                             }
                         }
