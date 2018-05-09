@@ -82,7 +82,7 @@ namespace ParkingConsoleApp
             }
             else if (car.Balance < 0)
             {
-                throw new Exception();
+                throw new OutOfBalanceException("Car balance is out you have to refill Balance");
             }
 
             Cars.Remove(car as Car);

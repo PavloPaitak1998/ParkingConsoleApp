@@ -115,16 +115,28 @@ namespace ParkingConsoleApp
                     }                    
                     break;
                 case 2:
-                    car = CarInfo();
-                    parking.RemoveCar(car);                    
-                    var stateObjClass = statesOC.Find(st => st.car.Id == car.Id);
-                    stateObjClass.TimerCanceled = true;
-                    statesOC.Remove(stateObjClass);
-                    if (parking.BusyParkingSpace==0)
                     {
-                        stateObj2.TimerCanceled = true;
-                    }
-                    break;
+                        car = CarInfo();
+                        try
+                        {
+                            parking.RemoveCar(car);
+                        }
+                        catch (OutOfBalanceException e)
+                        {
+                            Console.WriteLine(e.Message);
+                            car.Balance = GetBalance();
+                            parking.RemoveCar(car);
+                        }                       
+
+                        var stateObjClass = statesOC.Find(st => st.car.Id == car.Id);
+                        stateObjClass.TimerCanceled = true;
+                        statesOC.Remove(stateObjClass);
+                        if (parking.BusyParkingSpace == 0)
+                        {
+                            stateObj2.TimerCanceled = true;
+                        }
+                        break;
+                    }                  
                 case 3:
                     car = CarInfo();
                     var balance = GetBalance();

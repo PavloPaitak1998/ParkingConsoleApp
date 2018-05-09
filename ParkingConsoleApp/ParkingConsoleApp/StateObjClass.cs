@@ -12,6 +12,5 @@ namespace ParkingConsoleApp
         public System.Threading.Timer TimerReference;
         public bool TimerCanceled;
         public ICar car;
-
     }
 }
