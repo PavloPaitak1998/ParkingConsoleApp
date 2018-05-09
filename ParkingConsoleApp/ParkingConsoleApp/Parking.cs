@@ -78,7 +78,7 @@ namespace ParkingConsoleApp
             }
             else if (!Exist(car))
             {
-                throw new Exception();
+                throw new CarNotExistException($"Car with this Id: {car.Id} and Type: {car.TypeCar} not exist.\n Please try to input another car information");
             }
             else if (car.Balance < 0)
             {

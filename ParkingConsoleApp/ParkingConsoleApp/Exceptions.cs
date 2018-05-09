@@ -13,4 +13,13 @@ namespace ParkingConsoleApp
         { }
 
     }
+
+    class CarNotExistException : Exception
+    {
+        public CarNotExistException(string message)
+       : base(message)
+        { }
+
+    }
+
 }
