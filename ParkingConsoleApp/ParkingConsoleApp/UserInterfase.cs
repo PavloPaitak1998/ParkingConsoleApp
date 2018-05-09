@@ -135,6 +135,11 @@ namespace ParkingConsoleApp
                                 Console.WriteLine(e.Message);
                                 car = CarInfo();
                             }
+                            catch(NullReferenceException e)
+                            {
+                                Console.WriteLine(e.Message);
+                                car = CarInfo();
+                            }
                         }
                         
 

@@ -74,7 +74,7 @@ namespace ParkingConsoleApp
         {
             if (car == null)
             {
-                throw new NullReferenceException();
+                throw new NullReferenceException("Sth went wrong please input Car information again!");
             }
             else if (!Exist(car))
             {
