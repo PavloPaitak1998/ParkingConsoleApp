@@ -1,0 +1,7 @@
+C:\Users\Pavlo\Desktop\ParkingConsoleApp\ParkingConsoleApp\ParkingConsoleApp\bin\Debug\ParkingConsoleApp.exe.config
+C:\Users\Pavlo\Desktop\ParkingConsoleApp\ParkingConsoleApp\ParkingConsoleApp\bin\Debug\ParkingConsoleApp.exe
+C:\Users\Pavlo\Desktop\ParkingConsoleApp\ParkingConsoleApp\ParkingConsoleApp\bin\Debug\ParkingConsoleApp.pdb
+C:\Users\Pavlo\Desktop\ParkingConsoleApp\ParkingConsoleApp\ParkingConsoleApp\obj\Debug\ParkingConsoleApp.csprojResolveAssemblyReference.cache
+C:\Users\Pavlo\Desktop\ParkingConsoleApp\ParkingConsoleApp\ParkingConsoleApp\obj\Debug\ParkingConsoleApp.csproj.CoreCompileInputs.cache
+C:\Users\Pavlo\Desktop\ParkingConsoleApp\ParkingConsoleApp\ParkingConsoleApp\obj\Debug\ParkingConsoleApp.exe
+C:\Users\Pavlo\Desktop\ParkingConsoleApp\ParkingConsoleApp\ParkingConsoleApp\obj\Debug\ParkingConsoleApp.pdb

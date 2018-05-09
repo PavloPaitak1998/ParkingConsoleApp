@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParkingConsoleApp
 {
-    class Car
+    class Car:ICar
     {
         public int Id { get; set; }
         public double Balance { get; set; }

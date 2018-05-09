@@ -42,8 +42,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Car.cs" />
+    <Compile Include="ICar.cs" />
+    <Compile Include="Parking.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="StateObjClass.cs" />
+    <Compile Include="Transaction.cs" />
+    <Compile Include="UserInterfase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

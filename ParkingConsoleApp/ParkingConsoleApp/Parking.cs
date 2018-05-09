@@ -63,7 +63,7 @@ namespace ParkingConsoleApp
             }
 
 
-            Cars.Add(car);
+            Cars.Add(car as Car);
             Added($"Car: Id={car.Id} Type={car.TypeCar} is added");
             BusyParkingSpace++;
             FreeParkingSpace--;
@@ -85,7 +85,7 @@ namespace ParkingConsoleApp
                 throw new Exception();
             }
 
-            Cars.Remove(car);
+            Cars.Remove(car as Car);
             Removed($"Car: Id={car.Id} Type={car.TypeCar} is removed");
             BusyParkingSpace--;
             FreeParkingSpace++;
@@ -103,7 +103,7 @@ namespace ParkingConsoleApp
                 throw new Exception();
             }
 
-            var index = Cars.IndexOf(car);
+            var index = Cars.IndexOf(car as Car);
 
             Cars[index].Balance += balance;
             Refilled($"Car's balance: Id={car.Id} Type={car.TypeCar} is refilled. Balance is {car.Balance}");
@@ -149,6 +149,19 @@ namespace ParkingConsoleApp
 
         public void WriteTransactions(object obj)
         {
+
+            if (obj as StateObjClass == null)
+            {
+                throw new Exception();
+            }
+            var StateObj = obj as StateObjClass;
+
+            if (StateObj.TimerCanceled)
+            // Dispose Requested.  
+            {
+                StateObj.TimerReference.Dispose();
+            }
+
             using (StreamWriter sw = new StreamWriter(path, false, System.Text.Encoding.Default))
             {
                 foreach (var transaction in Transactions)
