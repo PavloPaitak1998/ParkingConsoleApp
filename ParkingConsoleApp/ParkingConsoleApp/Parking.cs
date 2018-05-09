@@ -90,6 +90,23 @@ namespace ParkingConsoleApp
             numberOfCars--;
         }
 
+        public void RefillBalance(ICar car, double balance)
+        {
+            if (car == null)
+            {
+                throw new NullReferenceException();
+            }
+            else if (!Exist(car))
+            {
+                throw new Exception();
+            }
+
+            var index = Cars.IndexOf(car);
+
+            Cars[index].Balance += balance;
+            Refilled($"Car's balance: Id={car.Id} Type={car.TypeCar} is refilled. Balance is {car.Balance}");
+        }
+
         private bool Exist(ICar car)
         {
             return Cars.Exists(c => c.Id == car.Id && c.TypeCar == car.TypeCar);
