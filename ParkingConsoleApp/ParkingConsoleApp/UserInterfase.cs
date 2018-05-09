@@ -73,7 +73,7 @@ namespace ParkingConsoleApp
 
         public static void ActionInfo()
         {
-            Console.WriteLine("\t\t\t\t\t\tMenu");
+            Console.WriteLine("\n\tMenu");
             Console.WriteLine("Choose your action");
             Console.Write("1-Add car on parking\n");
             Console.Write("2-Remove car from parking\n");
@@ -86,7 +86,21 @@ namespace ParkingConsoleApp
 
         public static void Action()
         {
-            int act = int.Parse(Console.ReadLine());
+            int act = 0; ;
+
+            while (true)
+            {
+                act = int.Parse(Console.ReadLine());
+                if (act==1 && parking.FreeParkingSpace == 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine("The Parking is full if you want to add car you must do it later.\n Please try another action\n");
+                    ActionInfo();
+                    continue;
+                }
+                break;
+            }
+            
 
             Console.Clear();
             ICar car = null;
