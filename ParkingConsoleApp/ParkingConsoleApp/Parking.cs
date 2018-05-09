@@ -23,10 +23,12 @@ namespace ParkingConsoleApp
             FreeParkingSpace = Settings.ParkingSpace;
             BusyParkingSpace = 0;
             numberOfCars = 0;
-            
+            path = "Transaction.txt";
+
         }
 
         private int numberOfCars;
+        private string path;
 
         public event ParkingStateHandler Removed;
         public event ParkingStateHandler Added;
@@ -144,6 +146,20 @@ namespace ParkingConsoleApp
                 //Console.WriteLine(Transactions.Last());
             }
         }
+
+        public void WriteTransactions(object obj)
+        {
+            using (StreamWriter sw = new StreamWriter(path, false, System.Text.Encoding.Default))
+            {
+                foreach (var transaction in Transactions)
+                {
+                    sw.WriteLine(transaction);
+                }
+
+            }
+            Transactions = new List<Transaction>();
+        }
+
 
         private bool Exist(ICar car)
         {
