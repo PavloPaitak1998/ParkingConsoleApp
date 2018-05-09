@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParkingConsoleApp
 {
-    class Transaction
+    public class Transaction
     {
         public DateTime TransactionTime { get; set; }
         public int CarId { get; set; }
