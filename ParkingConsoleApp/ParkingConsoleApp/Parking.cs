@@ -107,6 +107,44 @@ namespace ParkingConsoleApp
             Refilled($"Car's balance: Id={car.Id} Type={car.TypeCar} is refilled. Balance is {car.Balance}");
         }
 
+        public void Charge(object obj)
+        {
+            if (obj as StateObjClass == null)
+            {
+                throw new Exception();
+            }
+            var StateObj = obj as StateObjClass;
+            if (StateObj.TimerCanceled)
+            // Dispose Requested.  
+            {
+                StateObj.TimerReference.Dispose();
+            }
+
+            var payment = 0.0;
+            if (StateObj.car.Balance < Settings.Price[StateObj.car.TypeCar])
+            {
+                payment = Settings.Price[StateObj.car.TypeCar] * Settings.Fine;
+                StateObj.car.Balance -= payment;
+            }
+            else
+            {
+                payment = Settings.Price[StateObj.car.TypeCar];
+                StateObj.car.Balance -= payment;
+            }
+            lock (locker)
+            {
+
+                Balance += payment;
+                Transactions.Add(new Transaction
+                {
+                    TransactionTime = DateTime.Now,
+                    CarId = StateObj.car.Id,
+                    Payment = payment
+                });
+                //Console.WriteLine(Transactions.Last());
+            }
+        }
+
         private bool Exist(ICar car)
         {
             return Cars.Exists(c => c.Id == car.Id && c.TypeCar == car.TypeCar);
