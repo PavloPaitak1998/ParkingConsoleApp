@@ -32,42 +32,76 @@ namespace ParkingConsoleApp
             CarType carType = new CarType();
 
             Console.WriteLine("Please input information about car.");
-
-            Console.WriteLine("Id :");
-            id = int.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Balance :");
-            //balance = double.Parse(Console.ReadLine());
-
-            Console.WriteLine("Type of your car (Passenger, Truck, Bus, Motorcycle) :");
-            string str = Console.ReadLine();
-
-            Console.Clear();
-
-            switch (str)
+            while (true)
             {
-                case "Bus":
-                    carType = CarType.Bus;
+                try
+                {
+                    Console.WriteLine("Id :");
+                    id = int.Parse(Console.ReadLine());
                     break;
-                case "Passenger":
-                    carType = CarType.Passenger;
-                    break;
-                case "Truck":
-                    carType = CarType.Truck;
-                    break;
-                case "Motorcycle":
-                    carType = CarType.Motorcycle;
-                    break;
-                default:
-                    throw new Exception();
+                }
+                catch (FormatException)
+                {
+
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Uncorrect format entered data!");
+                    Console.ForegroundColor = ConsoleColor.White;                    
+                    continue;
+                }
             }
+
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine("Type of your car (passenger, truck, bus, motorcycle) :");
+                    string str = Console.ReadLine().ToLower();
+
+                    Console.Clear();
+
+                    switch (str)
+                    {
+                        case "bus":
+                            carType = CarType.Bus;
+                            break;
+                        case "passenger":
+                            carType = CarType.Passenger;
+                            break;
+                        case "truck":
+                            carType = CarType.Truck;
+                            break;
+                        case "motorcycle":
+                            carType = CarType.Motorcycle;
+                            break;
+                        default:
+                            throw new UncorrectFormatOfCar("It's uncorrect car type please try again !");
+                    }
+                    break;
+                }
+                catch (UncorrectFormatOfCar e)
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(e.Message);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    continue;
+                }
+
+
+            }
+            
+            
 
             if (parking.Cars.Exists(c => c.Id == id))
             {
                 return parking.Cars.Find(c => c.Id == id);
             }
+            else
+            {
+                return new Car { Id = id, TypeCar = carType };
+            }
 
-            return new Car { Id = id, TypeCar = carType };
 
         }
 
@@ -250,10 +284,26 @@ namespace ParkingConsoleApp
 
         public static double GetBalance()
         {
-            Console.WriteLine("Please input balance of the car");
-            var balance = double.Parse(Console.ReadLine());
-            Console.Clear();
-            return balance;
+            double balance = 0;
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine("Please input balance of the car");
+                    balance = double.Parse(Console.ReadLine());
+                    Console.Clear();
+                    return balance;
+                }
+                catch (FormatException)
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Uncorrect format entered data!");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    continue;
+                }
+            }
+            
 
         }
 

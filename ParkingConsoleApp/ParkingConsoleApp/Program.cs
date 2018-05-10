@@ -15,11 +15,11 @@ namespace ParkingConsoleApp
             bool flag = false;
             bool leave = false;
 
-            Console.WriteLine("Do you want to go back to Menu press (1) or leave the Parking  press (2)....");
-
             while (!flag)
             {
-                switch (Console.ReadLine().ToLower())
+                Console.WriteLine("Do you want to go back to Menu press (1) or leave the Parking  press (2)....");
+
+                switch (Console.ReadLine())
                 {
                     case "2":
                         flag = true;
@@ -32,8 +32,12 @@ namespace ParkingConsoleApp
                         break;
 
                     default:
+                        Console.Clear();    
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Uncorrect answer try again");
-                        break;
+                        Console.ForegroundColor = ConsoleColor.White;
+
+                        continue;
                 }
                 Console.Clear();
             }

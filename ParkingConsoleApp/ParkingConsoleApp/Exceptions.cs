@@ -27,4 +27,10 @@ namespace ParkingConsoleApp
         { }
     }
 
+    class UncorrectFormatOfCar : Exception
+    {
+        public UncorrectFormatOfCar(string message)
+       : base(message)
+        { }
+    }
 }
