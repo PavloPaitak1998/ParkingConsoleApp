@@ -23,12 +23,14 @@ namespace ParkingConsoleApp
             FreeParkingSpace = Settings.ParkingSpace;
             BusyParkingSpace = 0;
             numberOfCars = 0;
-            path = "Transaction.txt";
+            SumTransactionsFilePath = "Transaction.txt";
+            TransactionsFilePath = "TransactionsHistory.txt";
 
         }
 
         private int numberOfCars;
-        private string path;
+        private string SumTransactionsFilePath;
+        private string TransactionsFilePath;
 
         public event ParkingStateHandler Removed;
         public event ParkingStateHandler Added;
@@ -152,20 +154,38 @@ namespace ParkingConsoleApp
                 StateObj.TimerReference.Dispose();
             }
 
-            using (StreamWriter sw = new StreamWriter(path, false, System.Text.Encoding.Default))
+            using (StreamWriter swTo_Transaction = new StreamWriter(SumTransactionsFilePath, false, System.Text.Encoding.Default))
+            {
+                double sum = 0;
+                foreach (var transaction in Transactions)
+                {
+                    sum += transaction.Payment;
+                }
+                swTo_Transaction.WriteLine(DateTime.Now +" Sum: "+sum);
+            }
+
+            using (StreamWriter swTo_TransactionHistory = new StreamWriter(TransactionsFilePath, false, System.Text.Encoding.Default))
             {
                 foreach (var transaction in Transactions)
                 {
-                    sw.WriteLine(transaction);
+                    swTo_TransactionHistory.WriteLine(transaction);
                 }
-
             }
+
             Transactions = new List<Transaction>();
         }
 
-        public void ReadTransactions()
+        public void ReadSumTransactions()
         {
-            using (StreamReader sr = new StreamReader(path))
+            using (StreamReader sr = new StreamReader(SumTransactionsFilePath))
+            {
+                Console.WriteLine(sr.ReadToEnd());
+            }
+        }
+
+        public void ReadTransactionsHistory()
+        {
+            using (StreamReader sr = new StreamReader(TransactionsFilePath))
             {
                 Console.WriteLine(sr.ReadToEnd());
             }
