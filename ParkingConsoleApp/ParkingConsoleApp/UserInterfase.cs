@@ -112,10 +112,14 @@ namespace ParkingConsoleApp
             Console.Write("1-Add car on parking\n");
             Console.Write("2-Remove car from parking\n");
             Console.Write("3-Refill your balance\n");
-            Console.Write("4-Get number of Free Parking Space\n");
-            Console.Write("5-Get number of Busy Parking Space\n");
+            Console.Write("4-Get number of Free Parking Spaces\n");
+            Console.Write("5-Get number of Busy Parking Spaces\n");
             Console.Write("6-Get current balance of  Parking\n");
-            Console.Write("7-Get Transactions of  Parking in 1 min\n");
+            Console.Write("7-Get Transactions Sum of  Parking in 1 min\n");
+            Console.Write("8-Get Transactions History of  Parking in 1 min\n");
+
+            Console.WriteLine("9-Leave parking");
+
         }
 
         public static void Action()
@@ -198,7 +202,7 @@ namespace ParkingConsoleApp
                                 TimerCanceled = false
                             };
 
-                            timerTransactions = new Timer(parking.WriteTransactions, stateObjFor_timerTransactions, 0, 60000);
+                            timerTransactions = new Timer(parking.WriteTransactions, stateObjFor_timerTransactions, 60000, 60000);
                             stateObjFor_timerTransactions.TimerReference = timerTransactions;
                         }
                         break;
@@ -257,27 +261,36 @@ namespace ParkingConsoleApp
                     }
                 case 4:
                     {
-                        Console.WriteLine(parking.FreeParkingSpace);
+                        Console.WriteLine("Amount of Free Parking Spaces {0}", parking.FreeParkingSpace);
                         break;
 
                     }
                 case 5:
                     {
-                        Console.WriteLine(parking.BusyParkingSpace);
+                        Console.WriteLine("Amount of Busy Parking Spaces {0}",parking.BusyParkingSpace);
                         break;
 
                     }
                 case 6:
                     {
-                        Console.WriteLine(parking.Balance);
+                        Console.WriteLine("Parking Balance: {0}",parking.Balance);
                         break;
                     }
                 case 7:
                     {
                         Console.Clear();
-                        parking.ReadTransactions();
+                        parking.ReadSumTransactions();
                         break;
-
+                    }
+                case 8:
+                    {
+                        Console.Clear();
+                        parking.ReadTransactionsHistory();
+                        break;
+                    }
+                case 9:
+                    {
+                        break;
                     }
             }
         }
