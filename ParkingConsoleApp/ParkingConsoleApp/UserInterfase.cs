@@ -118,6 +118,8 @@ namespace ParkingConsoleApp
             Console.Write("7-Get Transactions Sum of  Parking in 1 min\n");
             Console.Write("8-Get Transactions History of  Parking in 1 min\n");
 
+            Console.WriteLine("9-Leave parking");
+
         }
 
         public static void Action()
@@ -284,6 +286,10 @@ namespace ParkingConsoleApp
                     {
                         Console.Clear();
                         parking.ReadTransactionsHistory();
+                        break;
+                    }
+                case 9:
+                    {
                         break;
                     }
             }

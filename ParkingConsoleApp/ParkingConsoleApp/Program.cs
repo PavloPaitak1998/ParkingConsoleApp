@@ -8,7 +8,7 @@ namespace ParkingConsoleApp
 {
     class Program
     {
-        static bool exit = false;
+       public static bool exit = false;
 
         static bool Leave()
         {
