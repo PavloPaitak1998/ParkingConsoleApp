@@ -38,6 +38,10 @@ namespace ParkingConsoleApp
                 {
                     Console.WriteLine("Id :");
                     id = int.Parse(Console.ReadLine());
+                    if (id < 0)
+                    {
+                        throw new FormatException();
+                    }
                     break;
                 }
                 catch (FormatException)
@@ -202,7 +206,7 @@ namespace ParkingConsoleApp
                                 TimerCanceled = false
                             };
 
-                            timerTransactions = new Timer(parking.WriteTransactions, stateObjFor_timerTransactions, 60000, 60000);
+                            timerTransactions = new Timer(parking.WriteTransactions, stateObjFor_timerTransactions, 0, 60000);
                             stateObjFor_timerTransactions.TimerReference = timerTransactions;
                         }
                         break;
@@ -304,6 +308,10 @@ namespace ParkingConsoleApp
                 {
                     Console.WriteLine("Please input balance of the car");
                     balance = double.Parse(Console.ReadLine());
+                    if (balance<0)
+                    {
+                        throw new FormatException();
+                    }
                     Console.Clear();
                     return balance;
                 }

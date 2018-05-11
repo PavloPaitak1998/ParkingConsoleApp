@@ -156,6 +156,7 @@ namespace ParkingConsoleApp
 
             using (StreamWriter swTo_Transaction = new StreamWriter(SumTransactionsFilePath, false, System.Text.Encoding.Default))
             {
+
                 double sum = 0;
                 foreach (var transaction in Transactions)
                 {
