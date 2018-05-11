@@ -9,7 +9,7 @@ namespace ParkingConsoleApp
     class Program
     {
        public static bool exit = false;
-
+        //Method checking whether to leave the program or not
         static bool Leave()
         {
             bool flag = false;
@@ -47,6 +47,11 @@ namespace ParkingConsoleApp
 
         static void Main(string[] args)
         {
+            //Initialization of basic parking information
+            Settings.Fine = 2;
+            Settings.ParkingSpace = 3;
+            Settings.TimeOut = 3;
+
             while (!exit)
             {
                 Console.WriteLine("Hello it's parking\nChoose action");

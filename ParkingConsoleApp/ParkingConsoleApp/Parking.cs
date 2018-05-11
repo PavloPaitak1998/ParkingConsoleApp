@@ -12,9 +12,12 @@ namespace ParkingConsoleApp
 
     class Parking
     {
+        //Realization of pattern Singelton
         readonly object locker = new object();
         private static readonly Lazy<Parking> lazy = new Lazy<Parking>(() => new Parking());
         public static Parking Instance { get { return lazy.Value; } }
+
+        //Initialization of default values
         private Parking()
         {
             Cars = new List<ICar>();
@@ -32,20 +35,22 @@ namespace ParkingConsoleApp
         private string SumTransactionsFilePath;
         private string TransactionsFilePath;
 
+        //Announcement of events
         public event ParkingStateHandler Removed;
         public event ParkingStateHandler Added;
         public event ParkingStateHandler Refilled;
 
+        //Additional functionality
+        public int FreeParkingSpace { get; private set; }
+        public int BusyParkingSpace { get; private set; }
+
+        //Main functionality
         public List<ICar> Cars { get; private set; }
         public List<Transaction> Transactions { get; private set; }
         public double Balance { get; private set; }
 
-        public int FreeParkingSpace { get; private set; }
-        public int BusyParkingSpace { get; private set; }
-
         public void AddCar(ICar car)
         {
-
             if (car == null)
             {
                 throw new NullReferenceException("Sth went wrong please input Car information again!");
@@ -56,7 +61,9 @@ namespace ParkingConsoleApp
             }
 
             Cars.Add(car as Car);
-            Added($"Car: Id={car.Id} Type={car.TypeCar} is added");
+
+            Added($"Car: Id={car.Id} Type={car.TypeCar} is added");// event on adding car
+
             BusyParkingSpace++;
             FreeParkingSpace--;
             numberOfCars++;
@@ -68,17 +75,15 @@ namespace ParkingConsoleApp
             {
                 throw new NullReferenceException("Sth went wrong please input Car information again!");
             }
-            else if (!Exist(car))
-            {
-                throw new CarNotExistException($"Car with this Id: {car.Id} and Type: {car.TypeCar} not exist.\n Please try to input another car information");
-            }
             else if (car.Balance < 0)
             {
                 throw new OutOfBalanceException("Car balance is out you have to refill Balance");
             }
 
             Cars.Remove(car as Car);
+            // event on removing car
             Removed($"Car: Id={car.Id} Type={car.TypeCar} is removed");
+
             BusyParkingSpace--;
             FreeParkingSpace++;
             numberOfCars--;
@@ -90,15 +95,13 @@ namespace ParkingConsoleApp
             {
                 throw new NullReferenceException();
             }
-            else if (!Exist(car))
-            {
-                throw new Exception();
-            }
 
             var index = Cars.IndexOf(car as Car);
 
             Cars[index].Balance += balance;
-            Refilled($"Car's balance: Id={car.Id} Type={car.TypeCar} is refilled. Balance is {car.Balance}");
+
+            // event on refilling car balance
+            Refilled($"Car's balance: Id={car.Id} Type={car.TypeCar} is refilled. Balance is {car.Balance}"); 
         }
 
         public void Charge(object obj)
@@ -154,9 +157,9 @@ namespace ParkingConsoleApp
                 StateObj.TimerReference.Dispose();
             }
 
+            //Write transactions amount in one minute
             using (StreamWriter swTo_Transaction = new StreamWriter(SumTransactionsFilePath, false, System.Text.Encoding.Default))
             {
-
                 double sum = 0;
                 foreach (var transaction in Transactions)
                 {
@@ -165,6 +168,7 @@ namespace ParkingConsoleApp
                 swTo_Transaction.WriteLine(DateTime.Now +" Sum: "+sum);
             }
 
+            //Write transactions history in one minute
             using (StreamWriter swTo_TransactionHistory = new StreamWriter(TransactionsFilePath, false, System.Text.Encoding.Default))
             {
                 foreach (var transaction in Transactions)
@@ -192,7 +196,8 @@ namespace ParkingConsoleApp
             }
         }
 
-        private bool Exist(ICar car)
+        //Check if exist car in our list Cars
+        public bool Exist(ICar car)
         {
             return Cars.Exists(c => c.Id == car.Id && c.TypeCar == car.TypeCar);
         }

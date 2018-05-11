@@ -9,12 +9,16 @@ namespace ParkingConsoleApp
 {
         public static class UserInterfase
      {
-        static StateObjClass stateObjFor_timerTransactions;
-        static List<StateObjClass> statesOC = new List<StateObjClass>();
+        
+        static StateObjClass stateObjFor_timerTransactions; //Announcement State of the timer invoking method that records transactions history
+        static List<StateObjClass> statesOC = new List<StateObjClass>(); //Announcement List of States of the timers invoking Charge method
+
         static Parking parking;
 
+        //Announcement the timer invoking method that records transactions history
         static Timer timerTransactions;
 
+        //Initialization of default values
         static UserInterfase()
         {
             parking = Parking.Instance;
@@ -32,6 +36,8 @@ namespace ParkingConsoleApp
             CarType carType = new CarType();
 
             Console.WriteLine("Please input information about car.");
+
+            //Сhecking and processing the input of the Id
             while (true)
             {
                 try
@@ -55,6 +61,7 @@ namespace ParkingConsoleApp
                 }
             }
 
+            //Сhecking and processing the input of the Car Type
             while (true)
             {
                 try
@@ -91,12 +98,9 @@ namespace ParkingConsoleApp
                     Console.ForegroundColor = ConsoleColor.White;
                     continue;
                 }
-
-
             }
-            
-            
 
+            //Checking the existence of the Car
             if (parking.Cars.Exists(c => c.Id == id))
             {
                 return parking.Cars.Find(c => c.Id == id);
@@ -129,7 +133,7 @@ namespace ParkingConsoleApp
         public static void Action()
         {
             int act = 0; ;
-
+            //Сhecking and processing the input of the action
             while (true)
             {
                 try
@@ -145,7 +149,8 @@ namespace ParkingConsoleApp
                     ActionInfo();
                     continue;
                 }
-                
+
+                //Сhecking the input of the action 1, 2, 3
                 if (act==1 && parking.FreeParkingSpace == 0)
                 {
                     Console.Clear();
@@ -155,6 +160,16 @@ namespace ParkingConsoleApp
                     ActionInfo();
                     continue;
                 }
+                else if ((act==2 || act==3) && parking.BusyParkingSpace == 0)
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("The parking is empty, you can't remove the car or refill balance");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    ActionInfo();
+                    continue;
+                }
+
                 break;
             }
             
@@ -166,46 +181,54 @@ namespace ParkingConsoleApp
             {
                 case 1:
                     {
-                        bool flag = true;
-                        while (flag)
+                        //Сhecking and processing the method AddCar
+                        while (true)
                         {
                             try
                             {
                                 car = CarInfo();
                                 car.Balance = GetBalance();
                                 parking.AddCar(car);
-                                flag = false;
+                                break;
                             }
                             catch (NullReferenceException e)
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine(e.Message);
                                 Console.ForegroundColor = ConsoleColor.White;
+                                continue;
                             }
                             catch (CarAlreadyExistException e)
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine(e.Message);
                                 Console.ForegroundColor = ConsoleColor.White;
+                                continue;
                             }
                         }
 
+                        //Initialization of State of the timer invoking method that charges payment for parking space
                         StateObjClass stateObj = new StateObjClass();
-                        statesOC.Add(stateObj);
+                        statesOC.Add(stateObj);//add to list
 
                         stateObj.TimerCanceled = false;
                         stateObj.car = car;
 
+                        //Initialization of the timer invoking method that charges payment for parking space
                         Timer timer = new Timer(parking.Charge, stateObj, Settings.TimeOut, Settings.TimeOut);
                         stateObj.TimerReference = timer;
 
+                        //Checking the timer invoking method that records transactions whether it exists
+                        //If no, initialize the timer
                         if (timerTransactions == null)
                         {
+                            //Initialization State of the timer invoking method that records transactions
                             stateObjFor_timerTransactions = new StateObjClass
                             {
                                 TimerCanceled = false
                             };
 
+                            //Initialization the timer invoking method that records transactions
                             timerTransactions = new Timer(parking.WriteTransactions, stateObjFor_timerTransactions, 0, 60000);
                             stateObjFor_timerTransactions.TimerReference = timerTransactions;
                         }
@@ -214,14 +237,34 @@ namespace ParkingConsoleApp
                     }
                 case 2:
                     {
-                        car = CarInfo();
-                        bool flag = true;
-                        while (flag)
+                        //Сhecking and processing the existence of the Car
+                        while (true)
+                        {
+                            try
+                            {
+                                car = CarInfo();
+                                if (!parking.Exist(car))
+                                {
+                                    throw new CarNotExistException($"Car with this Id: {car.Id} and Type: {car.TypeCar} not exist.\n Please try to input another car information");
+                                }
+                                break;
+                            }
+                            catch (CarNotExistException e)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine(e.Message);
+                                Console.ForegroundColor = ConsoleColor.White;
+                                continue;
+                            }
+                        }
+
+                        //Сhecking and processing the method RemoveCar
+                        while (true)
                         {
                             try
                             {
                                 parking.RemoveCar(car);
-                                flag = false;
+                                break;
                             }
                             catch (OutOfBalanceException e)
                             {
@@ -229,13 +272,7 @@ namespace ParkingConsoleApp
                                 Console.WriteLine(e.Message);
                                 Console.ForegroundColor = ConsoleColor.White;
                                 car.Balance = GetBalance();
-                            }
-                            catch (CarNotExistException e)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine(e.Message);
-                                Console.ForegroundColor = ConsoleColor.White;
-                                car = CarInfo();
+                                continue;
                             }
                             catch(NullReferenceException e)
                             {
@@ -243,13 +280,16 @@ namespace ParkingConsoleApp
                                 Console.WriteLine(e.Message);
                                 Console.ForegroundColor = ConsoleColor.White;
                                 car = CarInfo();
+                                continue;
                             }
                         }
-                        
+
+                        //Find and stop the timer which was fixed by this car
                         var stateObjClass = statesOC.Find(st => st.car.Id == car.Id);
                         stateObjClass.TimerCanceled = true;
                         statesOC.Remove(stateObjClass);
 
+                        //Check Busy Parking Spaces. If Busy Parking Spaces=0 , stop the timer which invoking WriteTransactions()
                         if (parking.BusyParkingSpace == 0)
                         {
                             stateObjFor_timerTransactions.TimerCanceled = true;
@@ -258,8 +298,29 @@ namespace ParkingConsoleApp
                     }                  
                 case 3:
                     {
-                        car = CarInfo();
+                        //Сhecking and processing the existence of the Car
+                        while (true)
+                        {
+                            try
+                            {
+                                car = CarInfo();
+                                if (!parking.Exist(car))
+                                {
+                                    throw new CarNotExistException($"Car with this Id: {car.Id} and Type: {car.TypeCar} not exist.\n Please try to input another car information");
+                                }
+                                break;
+                            }
+                            catch (CarNotExistException e)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine(e.Message);
+                                Console.ForegroundColor = ConsoleColor.White;
+                                continue;
+                            }                            
+                        }
+                        
                         var balance = GetBalance();
+
                         parking.RefillBalance(car, balance);
                         break;
                     }
