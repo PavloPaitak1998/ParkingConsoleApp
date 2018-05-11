@@ -157,11 +157,15 @@ namespace ParkingConsoleApp
                 StateObj.TimerReference.Dispose();
             }
 
+            //Create new list of transactions in order to have new copy 
+            //Therefore we dont't have the problem with changing the Transactions during loop foreach
+            var transactions = Transactions.GetRange(0, Transactions.Count);
+
             //Write transactions amount in one minute
             using (StreamWriter swTo_Transaction = new StreamWriter(SumTransactionsFilePath, false, System.Text.Encoding.Default))
             {
                 double sum = 0;
-                foreach (var transaction in Transactions)
+                foreach (var transaction in transactions)
                 {
                     sum += transaction.Payment;
                 }
@@ -171,10 +175,12 @@ namespace ParkingConsoleApp
             //Write transactions history in one minute
             using (StreamWriter swTo_TransactionHistory = new StreamWriter(TransactionsFilePath, false, System.Text.Encoding.Default))
             {
-                foreach (var transaction in Transactions)
+
+                foreach (var transaction in transactions)
                 {
                     swTo_TransactionHistory.WriteLine(transaction);
                 }
+
             }
 
             Transactions = new List<Transaction>();

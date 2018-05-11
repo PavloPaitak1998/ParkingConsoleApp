@@ -125,8 +125,9 @@ namespace ParkingConsoleApp
             Console.Write("6-Get current balance of  Parking\n");
             Console.Write("7-Get Transactions Sum of  Parking in 1 min\n");
             Console.Write("8-Get Transactions History of  Parking in 1 min\n");
+            Console.Write("9-Get amount of Parking Spaces\n");
 
-            Console.WriteLine("9-Leave parking");
+            Console.WriteLine("0-Leave parking");
 
         }
 
@@ -354,6 +355,11 @@ namespace ParkingConsoleApp
                         break;
                     }
                 case 9:
+                    {
+                        Console.WriteLine("Amount of the Parking Spaces {0}",Settings.ParkingSpace);
+                        break;
+                    }
+                case 0:
                     {
                         break;
                     }

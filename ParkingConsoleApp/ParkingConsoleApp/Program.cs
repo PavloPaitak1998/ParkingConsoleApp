@@ -50,11 +50,11 @@ namespace ParkingConsoleApp
             //Initialization of basic parking information
             Settings.Fine = 2;
             Settings.ParkingSpace = 3;
-            Settings.TimeOut = 3;
+            Settings.TimeOut = 3000;
 
             while (!exit)
             {
-                Console.WriteLine("Hello it's parking\nChoose action");
+                Console.WriteLine("Welcome to the Parking");
                 UserInterfase.ActionInfo();
                 UserInterfase.Action();
                 if (Leave())
